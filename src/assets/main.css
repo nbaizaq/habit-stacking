@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+@import "@nuxt/ui";
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: url('fonts/Montserrat-VariableFont_wght.ttf') format('ttf')
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+@theme {
+  --color-primary: #51a2ff;
+}

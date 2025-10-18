@@ -1,0 +1,53 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table routines {
+  id varchar [primary key]
+  userId varchar [not null]
+  name varchar [not null]
+  temporary boolean 
+  startTime varchar
+  endTime varchar
+}
+
+Table habits {
+  id varchar [primary key]
+  userId varchar [not null]
+  name varchar [not null]
+}
+
+Table routines_habits {
+  id varchar [primary key]
+  routine_id varchar [not null]
+  habit_id varchar [not null]
+  frequency enum
+  frequencyValue varchar
+  period varchar
+}
+
+Table routine_tracks {
+  id varchar [primary key]
+  userId varchar
+  date string
+  completed boolean
+  routineHabitId varchar
+}
+
+Table tracks {
+  id string [primary key]
+  userId string
+  date string
+  routineHabitId string
+  routineTrackId string
+  status string
+}
+
+Ref: "routines"."id" < "routines_habits"."routine_id"
+
+Ref: "habits"."id" < "routines_habits"."habit_id"
+
+Ref: "routines_habits"."id" < "tracks"."routineHabitId"
+
+Ref: "routines_habits"."id" < "routine_tracks"."routineHabitId"
+
+Ref: "routine_tracks"."id" < "tracks"."routineTrackId"

@@ -1,0 +1,71 @@
+<template>
+  <UCard class="space-y-2" :ui="{ body: 'p-2 sm:p-2' }">
+    <div class="flex justify-between items-center">
+      <div v-if="linkedHabit.habit" class="font-bold">
+        {{ linkedHabit.habit.name }}
+      </div>
+      <UButton
+        variant="ghost"
+        size="xs"
+        icon="i-lucide-trash"
+        color="error"
+        :loading="unlinkLoading"
+        :disabled="unlinkLoading"
+        @click="unlinkHabit"
+      ></UButton>
+    </div>
+    <USeparator class="my-1" />
+    <div class="space-y-2">
+      <div class="space-y-1">
+        <div class="text-sm">
+          Frequency:
+          {{ linkedHabit.frequency }}
+          <div class="inline-flex gap-2 items-center">
+            <template v-if="frequencyValue && Array.isArray(frequencyValue)">
+              <UBadge v-for="value in frequencyValue" :key="value" variant="soft" size="xs">{{
+                value
+              }}</UBadge>
+            </template>
+          </div>
+        </div>
+        <div class="text-sm">Period: {{ linkedHabit.period }}</div>
+      </div>
+    </div>
+  </UCard>
+</template>
+
+<script setup lang="ts">
+import type { Habit } from '@/api/habits'
+import { deleteRoutineHabit } from '@/api/routines-habits'
+import type { RoutinesHabitsItem } from '@/api/routines-habits'
+import { computed, ref } from 'vue'
+
+const props = defineProps<{
+  linkedHabit: RoutinesHabitsItem & { habit: Habit }
+}>()
+
+const unlinkLoading = ref(false)
+
+const emit = defineEmits<{
+  (e: 'unlink'): void
+}>()
+
+const frequencyValue = computed(() => {
+  try {
+    return JSON.parse(props.linkedHabit.frequencyValue)
+  } catch {
+    return null
+  }
+})
+
+function unlinkHabit() {
+  unlinkLoading.value = true
+  deleteRoutineHabit(props.linkedHabit.id)
+    .then(() => {
+      emit('unlink')
+    })
+    .finally(() => {
+      unlinkLoading.value = false
+    })
+}
+</script>
