@@ -3,7 +3,7 @@
     <slot />
     <div class="fixed bottom-4 left-0 right-0 h-16 flex justify-center items-center">
       <Footer
-        class="mx-auto px-2 py-2 rounded-lg backdrop-blur-xl bg-zinc-700/50 max-w-[calc(100%-32px)]"
+        class="mx-auto px-2 py-2 rounded-full backdrop-blur-xl bg-zinc-700/50 max-w-[calc(100%-32px)]"
       />
     </div>
   </div>
