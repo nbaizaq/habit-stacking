@@ -1,0 +1,10 @@
+{
+  "name": "Habit stacking",
+  "short_name": "HB",
+  "theme_color": "#1b1718",
+  "background_color": "#1b1718",
+  "display": "standalone",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/"
+}
