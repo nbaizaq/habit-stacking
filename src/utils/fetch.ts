@@ -28,11 +28,15 @@ class ApiClient {
     if (!response.ok) {
       if (response?.status === 401) {
         useAuthStore().setUser(null)
-        useToast().add({
-          title: 'Unauthorized',
-          description: 'Please login to continue',
-          color: 'error',
-        })
+        const toast = useToast()
+        const hasUnauthorized = toast.toasts.value.some((toast) => toast.title === 'Unauthorized')
+        if (!hasUnauthorized) {
+          toast.add({
+            title: 'Unauthorized',
+            description: 'Please login to continue',
+            color: 'error',
+          })
+        }
         await router.push('/auth/login')
       }
       const error = await response.json().catch(() => ({ message: 'Unknown error' }))
