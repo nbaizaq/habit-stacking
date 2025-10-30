@@ -1,11 +1,17 @@
 <template>
   <div
-    class="pl-2.5 pr-1 py-1.5 rounded-lg border-1 border-gray-700 flex justify-between gap-2 items-center text-lg"
-    :class="status === 'completed' ? 'line-through' : status === 'skipped' ? 'text-gray-500' : ''"
+    class="pl-2.5 pr-1 py-1.5 rounded-lg flex justify-between gap-2 items-center text-lg bg-gray-100 dark:bg-gray-500/50"
+    :class="
+      status === 'completed'
+        ? 'line-through'
+        : status === 'skipped'
+          ? 'text-gray-500 dark:text-gray-400/50'
+          : ''
+    "
   >
     <span>
       {{ habit?.name ?? 'Unknown habit' }}
-      <UBadge v-if="routineHabit && routineHabit.period" variant="soft">
+      <UBadge v-if="routineHabit && routineHabit.period" variant="soft" color="neutral" size="sm">
         {{ ms(ms(routineHabit?.period as StringValue), { long: true }) }}
       </UBadge>
     </span>
