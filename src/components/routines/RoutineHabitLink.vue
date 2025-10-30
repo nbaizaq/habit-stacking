@@ -157,4 +157,6 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
       loading.value = false
     })
 }
+
+appStore.fetchHabits()
 </script>

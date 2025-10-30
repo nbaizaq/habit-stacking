@@ -28,7 +28,9 @@
             </template>
           </div>
         </div>
-        <div class="text-sm">Period: {{ linkedHabit.period }}</div>
+        <div class="text-sm">
+          Period: {{ ms(ms(linkedHabit.period as StringValue), { long: true }) }}
+        </div>
       </div>
     </div>
   </UCard>
@@ -40,6 +42,7 @@ import { deleteRoutineHabit } from '@/api/routines-habits'
 import type { RoutinesHabitsItem } from '@/api/routines-habits'
 import { useAppStore } from '@/stores/app'
 import { computed, ref } from 'vue'
+import ms, { type StringValue } from 'ms'
 
 const props = defineProps<{
   linkedHabit: RoutinesHabitsItem & { habit: Habit }

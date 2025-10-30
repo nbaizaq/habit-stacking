@@ -55,7 +55,11 @@ const appStore = useAppStore()
 const loading = ref(false)
 function fetchRoutines() {
   loading.value = true
-  Promise.all([appStore.fetchRoutines(), appStore.fetchRoutinesHabits()]).finally(() => {
+  Promise.all([
+    appStore.fetchRoutines(),
+    appStore.fetchRoutinesHabits(),
+    appStore.fetchHabits(),
+  ]).finally(() => {
     loading.value = false
   })
 }

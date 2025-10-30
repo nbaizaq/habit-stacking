@@ -28,11 +28,12 @@
         ></UButton>
       </div>
     </div>
-    <div class="space-y-2" v-if="readonly">
-      <div class="flex gap-2 items-center">
-        <div class="text-base text-gray-400">
-          {{ routine.startTime?.slice(0, 5) }} - {{ routine.endTime?.slice(0, 5) }}
-        </div>
+    <div v-if="readonly">
+      <div class="text-gray-400">
+        {{ routine.startTime?.slice(0, 5) }} - {{ routine.endTime?.slice(0, 5) }}
+      </div>
+      <div v-if="linkedHabits && linkedHabits.length > 0" class="text-gray-400">
+        Total: {{ totalTime }}
       </div>
     </div>
     <template v-if="linkedHabits && linkedHabits.length > 0 && !hidden">
@@ -51,12 +52,13 @@
 
 <script setup lang="ts">
 import LinkedHabit from '@/components/habits/LinkedHabit.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { Routine } from '@/api/routine'
 import type { RoutinesHabitsItem } from '@/api/routines-habits'
 import type { Habit } from '@/api/habits'
+import ms, { type StringValue } from 'ms'
 
-defineProps<{
+const props = defineProps<{
   readonly?: boolean
   routine: Routine
   linkedHabits?: (RoutinesHabitsItem & { habit: Habit })[]
@@ -67,6 +69,12 @@ const hidden = ref(true)
 const emit = defineEmits<{
   (e: 'edit' | 'delete' | 'habit:add' | 'update'): void
 }>()
+
+const totalTime = computed(() => {
+  const _totalTime =
+    props.linkedHabits?.reduce((acc, curr) => acc + ms(curr.period as StringValue), 0) ?? 0
+  return ms(_totalTime, { long: true })
+})
 
 function editRoutine() {
   emit('edit')
