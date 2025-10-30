@@ -131,5 +131,4 @@ export const useAppStore = defineStore('app', {
       this.routinesHabits = this.routinesHabits.filter((e) => e.id !== routineHabitId)
     },
   },
-  persist: true,
 })

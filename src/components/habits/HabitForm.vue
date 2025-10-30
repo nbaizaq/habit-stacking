@@ -1,7 +1,7 @@
 <template>
   <UForm class="space-y-4" :state="form" :schema="schema" @submit="onSubmit">
     <UFormField label="Name" name="name">
-      <UInput v-model="form.name" class="w-full" size="lg" />
+      <UInput v-model="form.name" class="w-full" size="lg" ref="input" />
     </UFormField>
     <div class="flex justify-end gap-2 items-center">
       <UButton size="lg" variant="ghost" @click="emit('update:modelValue', false)">
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted, useTemplateRef } from 'vue'
 import * as v from 'valibot'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { createHabit, updateHabit } from '@/api/habits'
@@ -64,4 +64,11 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
       })
   }
 }
+
+const input = useTemplateRef('input')
+onMounted(() => {
+  setTimeout(() => {
+    input?.value?.inputRef?.focus()
+  }, 150)
+})
 </script>
