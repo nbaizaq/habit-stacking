@@ -2,7 +2,7 @@
   <div class="p-4 w-full sm:max-w-112 mx-auto pb-24">
     <slot />
     <div class="fixed bottom-4 left-0 right-0 h-16 flex justify-center items-center">
-      <UTabs v-model="tab" :items="tabs" />
+      <UTabs v-model="tab" :items="tabs" size="lg" />
     </div>
   </div>
 </template>

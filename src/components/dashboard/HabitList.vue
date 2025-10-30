@@ -9,6 +9,7 @@
         :track="habit.track"
         :loading="loadingHabitId === habit.id"
         :loading-action="loadingAction"
+        :routine-habit="habit"
         @track="trackHabit($event, habit.id)"
         active
       />

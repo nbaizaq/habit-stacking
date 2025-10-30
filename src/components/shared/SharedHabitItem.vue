@@ -1,10 +1,16 @@
 <template>
   <div
-    class="pl-2 pr-1 py-1 rounded-lg border-1 border-gray-700 flex justify-between gap-2 items-center"
+    class="pl-2.5 pr-1 py-1.5 rounded-lg border-1 border-gray-700 flex justify-between gap-2 items-center text-lg"
     :class="status === 'completed' ? 'line-through' : status === 'skipped' ? 'text-gray-500' : ''"
   >
-    {{ habit?.name ?? 'Unknown habit' }}
-    <div class="flex gap-1" v-if="active">
+    <span>
+      {{ habit?.name ?? 'Unknown habit' }}
+      <UBadge v-if="routineHabit && routineHabit.period" variant="soft">
+        {{ ms(ms(routineHabit?.period as StringValue), { long: true }) }}
+      </UBadge>
+    </span>
+
+    <div class="flex gap-2" v-if="active">
       <template v-if="!status">
         <UButton
           @click="trackHabit('completed')"
@@ -41,6 +47,8 @@
 import { computed } from 'vue'
 import type { Habit } from '@/api/habits'
 import type { Track } from '@/api/track'
+import type { RoutinesHabitsItem } from '@/api/routines-habits'
+import ms, { type StringValue } from 'ms'
 
 const props = defineProps<{
   routineHabitId: number
@@ -50,6 +58,7 @@ const props = defineProps<{
   active?: boolean
   loading?: boolean
   loadingAction?: 'completed' | 'skipped' | null
+  routineHabit?: RoutinesHabitsItem
 }>()
 const emit = defineEmits<{
   (

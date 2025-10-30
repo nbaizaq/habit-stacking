@@ -1,29 +1,12 @@
 <template>
-  <div>
-    <div class="flex items-stretch justify-between" v-if="selectedDate">
-      <UButton
-        size="sm"
-        variant="ghost"
-        class="cursor-pointer"
-        @click="previousWeek"
-        :ui="{ base: 'p-1' }"
-      >
-        <UIcon name="i-lucide-chevron-left" class="size-5" />
-      </UButton>
-      <DayItem
-        v-for="day in days"
-        :key="day.toDateString()"
-        :day="day"
-        @click="handleClick"
-        :selected-date="selectedDate"
-      />
-      <UButton size="sm" variant="ghost" @click="nextWeek" :ui="{ base: 'p-1' }">
-        <UIcon name="i-lucide-chevron-right" class="size-5" />
-      </UButton>
-    </div>
-    <div class="flex justify-end" v-if="!dayjs(selectedDate).isSame(dayjs(), 'day')">
-      <UButton size="sm" variant="ghost" @click="handleClick(new Date())">Today</UButton>
-    </div>
+  <div class="flex items-stretch justify-between" v-if="selectedDate">
+    <DayItem
+      v-for="day in days"
+      :key="day.toDateString()"
+      :day="day"
+      @click="handleClick"
+      :selected-date="selectedDate"
+    />
   </div>
 </template>
 
@@ -80,14 +63,4 @@ onBeforeUnmount(() => {
     window.clearInterval(updateTimeout)
   }
 })
-
-function previousWeek() {
-  const startDate = dayjs(selectedDate.value).subtract(1, 'week')
-  handleClick(startDate.toDate())
-}
-
-function nextWeek() {
-  const startDate = dayjs(selectedDate.value).add(1, 'week')
-  handleClick(startDate.toDate())
-}
 </script>

@@ -4,7 +4,7 @@
       @click="toggleHidden"
       class="w-full justify-between cursor-pointer"
       variant="soft"
-      size="lg"
+      size="xl"
     >
       {{ props.routine.name }}
       <UIcon
