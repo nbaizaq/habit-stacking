@@ -64,7 +64,6 @@ export const useAppStore = defineStore('app', {
         this.fetchHabits(),
         this.fetchRoutinesHabits(),
         this.fetchTracks(),
-        this.fetchRoutineTracks(),
       ])
     },
     fetchRoutines() {
@@ -100,6 +99,36 @@ export const useAppStore = defineStore('app', {
         this.routineTracks = data
         return true
       })
+    },
+    addHabit(habit: Habit) {
+      this.habits.push(habit)
+    },
+    deleteHabit(habitId: number) {
+      this.habits = this.habits.filter((e) => e.id !== habitId)
+    },
+    updateHabit(habit: Habit) {
+      const _habit = this.habits.find((e) => e.id === habit.id)
+      if (_habit) {
+        Object.assign(_habit, habit)
+      }
+    },
+    addRoutine(routine: Routine) {
+      this.routines.push(routine)
+    },
+    deleteRoutine(routineId: number) {
+      this.routines = this.routines.filter((e) => e.id !== routineId)
+    },
+    updateRoutine(routine: Routine) {
+      const _routine = this.routines.find((e) => e.id === routine.id)
+      if (_routine) {
+        Object.assign(_routine, routine)
+      }
+    },
+    addRoutineHabit(routineHabit: RoutinesHabitsItem) {
+      this.routinesHabits.push(routineHabit)
+    },
+    deleteRoutineHabit(routineHabitId: number) {
+      this.routinesHabits = this.routinesHabits.filter((e) => e.id !== routineHabitId)
     },
   },
   persist: true,

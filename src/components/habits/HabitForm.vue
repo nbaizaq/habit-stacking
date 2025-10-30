@@ -1,11 +1,13 @@
 <template>
   <UForm class="space-y-4" :state="form" :schema="schema" @submit="onSubmit">
     <UFormField label="Name" name="name">
-      <UInput v-model="form.name" class="w-full" />
+      <UInput v-model="form.name" class="w-full" size="lg" />
     </UFormField>
     <div class="flex justify-end gap-2 items-center">
-      <UButton variant="ghost" @click="emit('update:modelValue', false)"> Cancel </UButton>
-      <UButton type="submit"> Save </UButton>
+      <UButton size="lg" variant="ghost" @click="emit('update:modelValue', false)">
+        Cancel
+      </UButton>
+      <UButton size="lg" type="submit" :loading="loading"> Save </UButton>
     </div>
   </UForm>
 </template>
@@ -16,13 +18,16 @@ import * as v from 'valibot'
 import type { FormSubmitEvent } from '@nuxt/ui'
 import { createHabit, updateHabit } from '@/api/habits'
 import type { Habit } from '@/api/habits'
+import { useAppStore } from '@/stores/app'
 
 const props = defineProps<{
   habit: Habit | null
 }>()
 
+const appStore = useAppStore()
+
 const emit = defineEmits<{
-  (e: 'update'): void
+  (e: 'close'): void
   (e: 'update:modelValue', value: boolean): void
 }>()
 
@@ -41,16 +46,18 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
   loading.value = true
   if (props.habit?.id) {
     updateHabit({ ...props.habit, ...(event.data as unknown as Habit) })
-      .then(() => {
-        emit('update')
+      .then((habit) => {
+        appStore.updateHabit(habit)
+        emit('close')
       })
       .finally(() => {
         loading.value = false
       })
   } else {
     createHabit({ ...(event.data as unknown as Habit) })
-      .then(() => {
-        emit('update')
+      .then((habit) => {
+        appStore.addHabit(habit)
+        emit('close')
       })
       .finally(() => {
         loading.value = false

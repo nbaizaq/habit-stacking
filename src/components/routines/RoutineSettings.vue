@@ -44,7 +44,7 @@
       v-model:open="routineDialog"
     >
       <template #body>
-        <RoutineForm v-model="routineDialog" :routine="routineForm" @update="onUpdate" />
+        <RoutineForm v-model="routineDialog" :routine="routineForm" @close="onClose" />
       </template>
     </UModal>
     <UModal
@@ -57,7 +57,7 @@
           v-if="routineHabitLinkForm"
           v-model="routineHabitLinkDialog"
           :routine="routineHabitLinkForm"
-          @update="onUpdateRoutineHabit"
+          @close="onCloseRoutineHabitLink"
         />
       </template>
     </UModal>
@@ -92,12 +92,11 @@ function openRoutineForm(routine: Routine | null) {
   routineForm.value = routine
 }
 
-function onUpdate() {
+function onClose() {
   routineDialog.value = false
   setTimeout(() => {
     routineForm.value = null
   }, 150)
-  appStore.fetchRoutines()
 }
 
 function onDeleteRoutine(routineId: number) {
@@ -113,12 +112,11 @@ function openRoutineHabitLink(routine: Routine) {
   routineHabitLinkForm.value = routine
 }
 
-function onUpdateRoutineHabit() {
+function onCloseRoutineHabitLink() {
   routineHabitLinkDialog.value = false
   setTimeout(() => {
     routineHabitLinkForm.value = null
   }, 150)
-  appStore.fetch()
 }
 
 function getLinkedHabits(routineId: number): (RoutinesHabitsItem & { habit: Habit })[] {

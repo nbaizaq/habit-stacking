@@ -12,6 +12,7 @@
           variant="soft"
           color="neutral"
           icon="i-lucide-check-circle"
+          :loading="loading && loadingAction === 'completed'"
         />
         <UButton
           @click="trackHabit('skipped')"
@@ -19,6 +20,7 @@
           variant="soft"
           color="neutral"
           icon="i-lucide-arrow-right"
+          :loading="loading && loadingAction === 'skipped'"
         />
       </template>
       <template v-else>
@@ -28,6 +30,7 @@
           variant="soft"
           color="neutral"
           icon="i-lucide-rotate-ccw"
+          :loading="loading && loadingAction === null"
         />
       </template>
     </div>
@@ -45,6 +48,8 @@ const props = defineProps<{
   track?: Track
   routineTrackId?: number
   active?: boolean
+  loading?: boolean
+  loadingAction?: 'completed' | 'skipped' | null
 }>()
 const emit = defineEmits<{
   (

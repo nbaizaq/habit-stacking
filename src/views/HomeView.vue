@@ -36,16 +36,17 @@ const habits = computed(() => appStore.getHabits)
 const routinesHabits = computed(() => appStore.getRoutinesHabits)
 const tracks = computed(() => appStore.getTracks)
 
-function onSelectDate() {
-  appStore.fetchTracks()
-}
-
 const loading = ref(false)
 
-appStore.setSelectedDate(new Date())
-if (appStore.getRoutines.length === 0) {
+function onSelectDate() {
   loading.value = true
+  appStore.fetchTracks().finally(() => {
+    loading.value = false
+  })
 }
+
+loading.value = true
+appStore.setSelectedDate(new Date())
 appStore.fetch().finally(() => {
   loading.value = false
 })

@@ -2,29 +2,26 @@
   <UCard variant="subtle" :ui="{ body: 'p-2 sm:p-4' }">
     <div class="flex justify-between items-center">
       <div class="flex gap-2 items-center">
-        <div class="text-lg font-bold">{{ routine.name }}</div>
+        <div class="text-xl font-bold">{{ routine.name }}</div>
         <UBadge v-if="routine.temporary" variant="subtle" size="xs">Temporary</UBadge>
       </div>
       <div class="flex gap-2 items-center">
         <UButton
           v-if="linkedHabits && linkedHabits.length > 0"
           variant="ghost"
-          size="xs"
           @click="hidden = !hidden"
           :icon="hidden ? 'i-lucide-chevron-down' : 'i-lucide-chevron-up'"
         ></UButton>
-        <UButton variant="ghost" size="xs" @click="addHabit" icon="i-lucide-plus"></UButton>
+        <UButton variant="ghost" @click="addHabit" icon="i-lucide-plus"></UButton>
         <UButton
           v-if="!readonly"
           variant="ghost"
-          size="xs"
           @click="editRoutine"
           icon="i-lucide-edit"
         ></UButton>
         <UButton
           v-if="!readonly"
           variant="ghost"
-          size="xs"
           color="error"
           @click="deleteRoutine"
           icon="i-lucide-trash"
@@ -33,7 +30,9 @@
     </div>
     <div class="space-y-2" v-if="readonly">
       <div class="flex gap-2 items-center">
-        <div class="text-sm text-gray-400">{{ routine.startTime }} - {{ routine.endTime }}</div>
+        <div class="text-base text-gray-400">
+          {{ routine.startTime?.slice(0, 5) }} - {{ routine.endTime?.slice(0, 5) }}
+        </div>
       </div>
     </div>
     <template v-if="linkedHabits && linkedHabits.length > 0 && !hidden">

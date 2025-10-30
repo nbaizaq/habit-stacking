@@ -38,6 +38,15 @@ class ApiClient {
           })
         }
         await router.push('/auth/login')
+      } else if (response?.status === 400) {
+        const toast = useToast()
+        const error = await response?.json().catch(() => ({ message: 'Unknown error' }))
+        toast.add({
+          title: 'Error',
+          description: error?.message ?? 'Unknown error',
+          color: 'error',
+        })
+        throw new Error(error?.message ?? 'Unknown error')
       }
       const error = await response.json().catch(() => ({ message: 'Unknown error' }))
       throw new Error(error.message)

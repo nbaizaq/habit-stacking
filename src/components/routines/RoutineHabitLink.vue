@@ -8,6 +8,7 @@
         :label-key="'name'"
         :value-key="'id'"
         class="w-full"
+        size="lg"
       />
     </UFormField>
     <template v-if="routine && !routine.temporary">
@@ -18,6 +19,7 @@
           :label-key="'label'"
           :value-key="'id'"
           class="w-full"
+          size="lg"
         />
       </UFormField>
       <UFormField v-if="form.frequency === 'weekly'" label="Frequency value" name="frequencyValue">
@@ -27,16 +29,19 @@
           :label-key="'label'"
           :value-key="'id'"
           class="w-full"
+          size="lg"
           multiple
         />
       </UFormField>
     </template>
     <UFormField label="Period" name="period">
-      <UInput v-model="form.period" class="w-full" />
+      <UInput v-model="form.period" class="w-full" size="lg" />
     </UFormField>
     <div class="flex justify-end gap-2 items-center">
-      <UButton variant="ghost" @click="emit('update:modelValue', false)"> Cancel </UButton>
-      <UButton type="submit" :disabled="loading"> Save </UButton>
+      <UButton size="lg" variant="ghost" @click="emit('update:modelValue', false)">
+        Cancel
+      </UButton>
+      <UButton size="lg" type="submit" :disabled="loading"> Save </UButton>
     </div>
   </UForm>
 </template>
@@ -59,7 +64,7 @@ const props = defineProps<{
 const habits = computed(() => appStore.getHabits)
 
 const emit = defineEmits<{
-  (e: 'update'): void
+  (e: 'close'): void
   (e: 'update:modelValue', value: boolean): void
 }>()
 
@@ -144,8 +149,9 @@ function onSubmit(event: FormSubmitEvent<Schema>) {
     ...(event.data as unknown as RoutinesHabitsItem),
     frequencyValue: JSON.stringify(event.data.frequencyValue),
   })
-    .then(() => {
-      emit('update')
+    .then((routineHabit) => {
+      appStore.addRoutineHabit(routineHabit)
+      emit('close')
     })
     .finally(() => {
       loading.value = false

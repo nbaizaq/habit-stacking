@@ -1,12 +1,12 @@
 <template>
-  <UCard class="space-y-2" :ui="{ body: 'p-2 sm:p-2' }">
+  <UCard class="space-y-2" :ui="{ body: 'p-2 sm:pl-4 sm:pr-2 sm:py-2' }">
     <div class="flex justify-between items-center">
       <div v-if="linkedHabit.habit" class="font-bold">
         {{ linkedHabit.habit.name }}
       </div>
       <UButton
         variant="ghost"
-        size="xs"
+        size="sm"
         icon="i-lucide-trash"
         color="error"
         :loading="unlinkLoading"
@@ -38,17 +38,14 @@
 import type { Habit } from '@/api/habits'
 import { deleteRoutineHabit } from '@/api/routines-habits'
 import type { RoutinesHabitsItem } from '@/api/routines-habits'
+import { useAppStore } from '@/stores/app'
 import { computed, ref } from 'vue'
 
 const props = defineProps<{
   linkedHabit: RoutinesHabitsItem & { habit: Habit }
 }>()
-
+const appStore = useAppStore()
 const unlinkLoading = ref(false)
-
-const emit = defineEmits<{
-  (e: 'unlink'): void
-}>()
 
 const frequencyValue = computed(() => {
   try {
@@ -62,7 +59,7 @@ function unlinkHabit() {
   unlinkLoading.value = true
   deleteRoutineHabit(props.linkedHabit.id)
     .then(() => {
-      emit('unlink')
+      appStore.deleteRoutineHabit(props.linkedHabit.id)
     })
     .finally(() => {
       unlinkLoading.value = false

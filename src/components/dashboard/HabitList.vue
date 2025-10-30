@@ -7,7 +7,9 @@
         :routine-habit-id="habit.id"
         :habit="habit.habit"
         :track="habit.track"
-        @track="trackHabit"
+        :loading="loadingHabitId === habit.id"
+        :loading-action="loadingAction"
+        @track="trackHabit($event, habit.id)"
         active
       />
     </div>
@@ -19,7 +21,7 @@
 import SharedHabitItem from '@/components/shared/SharedHabitItem.vue'
 import { createTrack, type Track } from '@/api/track'
 import { useAppStore } from '@/stores/app'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { RoutinesHabitsItem } from '@/api/routines-habits'
 import type { Habit } from '@/api/habits'
 
@@ -43,18 +45,30 @@ const habits = computed((): (RoutinesHabitsItem & { habit?: Habit; track?: Track
     }),
 )
 
-function trackHabit(payload: {
-  id?: number
-  routineHabitId: number
-  routineTrackId?: number
-  status: 'completed' | 'skipped' | null
-}) {
+const loadingHabitId = ref<number | null>(null)
+const loadingAction = ref<('completed' | 'skipped' | null) | null>()
+function trackHabit(
+  payload: {
+    id?: number
+    routineHabitId: number
+    routineTrackId?: number
+    status: 'completed' | 'skipped' | null
+  },
+  habitId: number,
+) {
+  loadingHabitId.value = habitId
+  loadingAction.value = payload.status
+
   return createTrack({
     ...payload,
     date: selectedDate.value.toISOString(),
-  }).then(() => {
-    appStore.fetchTracks()
-    return true
   })
+    .then(() => {
+      return appStore.fetchTracks()
+    })
+    .finally(() => {
+      loadingHabitId.value = null
+      loadingAction.value = null
+    })
 }
 </script>

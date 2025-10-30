@@ -3,16 +3,16 @@
     <template #header>
       <div class="flex justify-between items-center">
         <div class="flex gap-2 items-center">
-          <div class="text-lg font-bold">{{ habit.name }}</div>
+          <div class="text-xl font-bold">{{ habit.name }}</div>
         </div>
         <div class="flex gap-2 items-center">
-          <UButton variant="ghost" size="xs" icon="i-lucide-edit" @click="editHabit"></UButton>
+          <UButton variant="ghost" icon="i-lucide-edit" @click="editHabit"></UButton>
           <UButton
             variant="ghost"
-            size="xs"
             icon="i-lucide-trash"
             color="error"
-            @click="deleteHabit"
+            :loading="deleteLoading"
+            @click="onDeleteHabit"
           ></UButton>
         </div>
       </div>
@@ -21,12 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Habit } from '@/api/habits'
+import { deleteHabit, type Habit } from '@/api/habits'
+import { useAppStore } from '@/stores/app'
+import { ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   habit: Habit
   readonly?: boolean
 }>()
+
+const appStore = useAppStore()
 
 const emit = defineEmits<{
   (e: 'edit' | 'delete'): void
@@ -36,7 +40,16 @@ function editHabit() {
   emit('edit')
 }
 
-function deleteHabit() {
-  emit('delete')
+const deleteLoading = ref(false)
+
+function onDeleteHabit() {
+  deleteLoading.value = true
+  deleteHabit(props.habit.id)
+    .then(() => {
+      appStore.deleteHabit(props.habit.id)
+    })
+    .finally(() => {
+      deleteLoading.value = false
+    })
 }
 </script>

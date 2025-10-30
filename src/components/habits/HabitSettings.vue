@@ -2,7 +2,7 @@
   <div class="space-y-4">
     <div class="space-y-4">
       <div class="flex justify-end mt-4">
-        <UButton variant="outline" icon="i-lucide-plus" @click="openHabitForm(null)"
+        <UButton size="lg" variant="outline" icon="i-lucide-plus" @click="openHabitForm(null)"
           >Add habit</UButton
         >
       </div>
@@ -12,7 +12,6 @@
           :key="habit.id"
           :habit="habit"
           @edit="openHabitForm(habit)"
-          @delete="onDelete(habit.id)"
         />
       </div>
     </div>
@@ -22,7 +21,7 @@
       v-model:open="habitDialog"
     >
       <template #body>
-        <HabitForm v-model="habitDialog" :habit="habitForm" @update="onUpdated" />
+        <HabitForm v-model="habitDialog" :habit="habitForm" @close="onClose" />
       </template>
     </UModal>
   </div>
@@ -33,7 +32,7 @@ import HabitItem from '@/components/habits/HabitItem.vue'
 import HabitForm from '@/components/habits/HabitForm.vue'
 import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/app'
-import { deleteHabit, type Habit } from '@/api/habits'
+import { type Habit } from '@/api/habits'
 
 const appStore = useAppStore()
 const habits = computed(() => appStore.getHabits)
@@ -45,17 +44,10 @@ function openHabitForm(habit: Habit | null) {
   habitForm.value = habit
 }
 
-function onUpdated() {
+function onClose() {
   habitDialog.value = false
   setTimeout(() => {
     habitForm.value = null
   }, 150)
-  appStore.fetchHabits()
-}
-
-function onDelete(habitId: number) {
-  deleteHabit(habitId).then(() => {
-    appStore.fetchHabits()
-  })
 }
 </script>
