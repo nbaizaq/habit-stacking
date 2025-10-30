@@ -1,9 +1,9 @@
 <template>
   <div
-    class="pl-2.5 pr-1 py-1.5 rounded-lg flex justify-between gap-2 items-center text-lg bg-gray-100 dark:bg-gray-500/50"
+    class="pl-3 pr-2 py-2 rounded-lg flex justify-between gap-2 items-center text-lg bg-gray-100 dark:bg-gray-500/50"
     :class="
       status === 'completed'
-        ? 'line-through'
+        ? 'line-through text-gray-500 dark:text-gray-400/50'
         : status === 'skipped'
           ? 'text-gray-500 dark:text-gray-400/50'
           : ''
@@ -12,7 +12,7 @@
     <span>
       {{ habit?.name ?? 'Unknown habit' }}
       <UBadge v-if="routineHabit && routineHabit.period" variant="soft" color="neutral" size="sm">
-        {{ ms(ms(routineHabit?.period as StringValue), { long: true }) }}
+        {{ ms(ms(routineHabit?.period as StringValue), { long: false }) }}
       </UBadge>
     </span>
 

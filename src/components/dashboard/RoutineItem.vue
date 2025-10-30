@@ -13,9 +13,7 @@
         :class="hidden ? 'rotate-180 transition duration-200' : 'rotate-0 transition duration-200'"
       />
     </UButton>
-    <Transition>
-      <HabitList v-if="!hidden" :habits="linkedHabits" :routine-id="props.routine.id" />
-    </Transition>
+    <HabitList v-if="!hidden" :habits="linkedHabits" :routine-id="props.routine.id" />
   </div>
 </template>
 
@@ -37,11 +35,11 @@ if (!props.routine.temporary) {
   const now = new Date()
   const startDateTime = dayjs(
     dayjs().format('YYYY-MM-DD') + ' ' + props.routine.startTime,
-    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD HH:mm:ss.SSS',
   ).toDate()
   const endDateTime = dayjs(
     dayjs().format('YYYY-MM-DD') + ' ' + props.routine.endTime,
-    'YYYY-MM-DD HH:mm:ss',
+    'YYYY-MM-DD HH:mm:ss.SSS',
   ).toDate()
   hidden.value = now < startDateTime || now > endDateTime
 }
@@ -54,16 +52,3 @@ function toggleHidden() {
   hidden.value = !hidden.value
 }
 </script>
-
-<style>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s linear;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
