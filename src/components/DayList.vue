@@ -25,11 +25,13 @@ function setupDays() {
   if (!selectedDate.value) return
 
   const result: Date[] = []
-  const startDate = dayjs(selectedDate.value).startOf('week')
+  let startDate = dayjs(new Date()).subtract(
+    dayjs(new Date()).diff(dayjs().startOf('week'), 'day'),
+    'day',
+  )
   for (let i = 0; i < 7; i++) {
-    const date = new Date(startDate.toDate())
-    date.setDate(startDate.toDate().getDate() + i)
-    result.push(date)
+    result.push(dayjs(startDate).toDate())
+    startDate = startDate.add(1, 'day')
   }
 
   days.value = result

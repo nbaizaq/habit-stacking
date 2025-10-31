@@ -1,11 +1,12 @@
 <template>
   <UButton
-    class="text-xs cursor-pointer flex flex-col items-center justify-center rounded gap-0 w-12"
+    class="text-xs cursor-pointer flex flex-col items-center justify-center rounded gap-0 min-w-10 max-w-12 flex-grow"
     :class="[isSelected ? 'text-xs sm:text-sm' : '']"
     :color="isPast ? 'neutral' : 'primary'"
     :variant="isSelected ? 'solid' : isToday ? 'outline' : 'ghost'"
     @click="handleClick"
     :ui="{ base: 'p-1' }"
+    size="xs"
   >
     <div>{{ day }}</div>
     <div>{{ dayName }}</div>

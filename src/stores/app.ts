@@ -56,7 +56,7 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     setSelectedDate(date: Date) {
-      this.selectedDate = date.toDateString()
+      this.selectedDate = date.toISOString()
     },
     fetch() {
       return Promise.all([
