@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-4 overflow-y-auto h-full pb-4">
+  <div class="space-y-8 overflow-y-auto h-full pb-4">
     <TemporaryItem
       v-if="activeRoutineTrack && activeRoutine"
       :routine="activeRoutine"
@@ -46,4 +46,5 @@ function getRoutineTracks(routineId: number) {
 }
 
 appStore.fetch()
+appStore.fetchRoutineTracks()
 </script>

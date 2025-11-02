@@ -4,10 +4,10 @@
       <SharedHabitItem
         v-for="habit in habits"
         :key="habit.id"
-        :habit="habit"
+        :habit="habit.habit"
         :routine-track-id="routineTrackId"
-        :routine-habit-id="getRoutineHabitId(habit.id)"
-        :track="getTrack(habit.id)"
+        :routine-habit-id="habit.id"
+        :track="getTrack(habit.habit.id)"
         :active="active"
         @track="onTrack"
       />
@@ -22,12 +22,13 @@ import { useAppStore } from '@/stores/app'
 import { computed, inject } from 'vue'
 import type { Habit } from '@/api/habits'
 import type { Track } from '@/api/track'
+import type { RoutinesHabitsItem } from '@/api/routines-habits'
 
 const appStore = useAppStore()
 const props = defineProps<{
   routineId: number
   routineTrackId?: number
-  habits: Habit[]
+  habits: (RoutinesHabitsItem & { habit: Habit })[]
   tracks: Track[]
 }>()
 
@@ -61,13 +62,6 @@ function onTrack(value: {
     ...value,
     date: selectedDate.value.toISOString(),
   })
-}
-
-function getRoutineHabitId(habitId: number) {
-  const routineHabit = appStore.getRoutinesHabits.find(
-    (e) => e.habitId === habitId && e.routineId === props.routineId,
-  )
-  return routineHabit?.id ?? 0
 }
 
 function getTrack(habitId: number) {

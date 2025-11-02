@@ -130,5 +130,17 @@ export const useAppStore = defineStore('app', {
     deleteRoutineHabit(routineHabitId: number) {
       this.routinesHabits = this.routinesHabits.filter((e) => e.id !== routineHabitId)
     },
+    addRoutineTrack(routineTrack: RoutineTrack) {
+      this.routineTracks.push(routineTrack)
+    },
+    deleteRoutineTrack(routineTrackId: number) {
+      this.routineTracks = this.routineTracks.filter((e) => e.id !== routineTrackId)
+    },
+    addTrack(track: Track) {
+      this.tracks.push(track)
+    },
+    deleteTrack(trackId: number) {
+      this.tracks = this.tracks.filter((e) => e.id !== trackId)
+    },
   },
 })
