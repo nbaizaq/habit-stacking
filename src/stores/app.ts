@@ -143,4 +143,5 @@ export const useAppStore = defineStore('app', {
       this.tracks = this.tracks.filter((e) => e.id !== trackId)
     },
   },
+  persist: true,
 })

@@ -39,14 +39,22 @@ const tracks = computed(() => appStore.getTracks)
 const loading = ref(false)
 
 function onSelectDate() {
-  loading.value = true
+  if (appStore.getTracks.length === 0) {
+    loading.value = true
+  }
   appStore.fetchTracks().finally(() => {
     loading.value = false
   })
 }
 
-loading.value = true
-appStore.setSelectedDate(new Date())
+if (appStore.getSelectedDate === null) {
+  loading.value = true
+}
+const now = new Date()
+if (now.getHours() < 5) {
+  now.setDate(now.getDate() - 1)
+}
+appStore.setSelectedDate(now)
 appStore.fetch().finally(() => {
   loading.value = false
 })

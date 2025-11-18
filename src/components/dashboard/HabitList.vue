@@ -7,7 +7,7 @@
         :routine-habit-id="habit.id"
         :habit="habit.habit"
         :track="habit.track"
-        :loading="loadingHabitId === habit.id"
+        :loading="loadingHabitId[habit.id]"
         :loading-action="loadingAction"
         :routine-habit="habit"
         @track="trackHabit($event, habit.id)"
@@ -46,7 +46,7 @@ const habits = computed((): (RoutinesHabitsItem & { habit?: Habit; track?: Track
     }),
 )
 
-const loadingHabitId = ref<number | null>(null)
+const loadingHabitId = ref<Record<string, boolean>>({})
 const loadingAction = ref<('completed' | 'skipped' | null) | null>()
 function trackHabit(
   payload: {
@@ -57,7 +57,7 @@ function trackHabit(
   },
   habitId: number,
 ) {
-  loadingHabitId.value = habitId
+  loadingHabitId.value[habitId] = true
   loadingAction.value = payload.status
 
   return createTrack({
@@ -68,7 +68,8 @@ function trackHabit(
       return appStore.fetchTracks()
     })
     .finally(() => {
-      loadingHabitId.value = null
+      loadingHabitId.value[habitId] = false
+      delete loadingHabitId.value[habitId]
       loadingAction.value = null
     })
 }
