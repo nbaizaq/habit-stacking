@@ -5,6 +5,7 @@ import { getRoutinesHabits, type RoutinesHabitsItem } from '@/api/routines-habit
 import { getTracks, type Track } from '@/api/track'
 import { getRoutineTracks, type RoutineTrack } from '@/api/routine-tracks'
 import dayjs from 'dayjs'
+import { DATE_FORMAT } from '@/utils/constants'
 
 interface AppState {
   selectedDate: string | null
@@ -26,11 +27,8 @@ export const useAppStore = defineStore('app', {
     routineTracks: [],
   }),
   getters: {
-    getSelectedDate(): Date {
-      if (this.selectedDate) {
-        return new Date(this.selectedDate)
-      }
-      return new Date()
+    getSelectedDate(): string | null {
+      return this.selectedDate
     },
     getRoutines(): Routine[] {
       return this.routines
@@ -56,7 +54,7 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     setSelectedDate(date: Date) {
-      this.selectedDate = date.toISOString()
+      this.selectedDate = dayjs(date).format(DATE_FORMAT)
     },
     fetch() {
       return Promise.all([
@@ -86,8 +84,8 @@ export const useAppStore = defineStore('app', {
     },
     fetchTracks() {
       let date
-      if (this.selectedDate && !dayjs(this.selectedDate).isSame(dayjs(), 'day')) {
-        date = new Date(this.selectedDate)
+      if (this.selectedDate && !dayjs(this.selectedDate, DATE_FORMAT).isSame(dayjs(), 'day')) {
+        date = this.selectedDate
       }
       return getTracks(date).then((data) => {
         this.tracks = data

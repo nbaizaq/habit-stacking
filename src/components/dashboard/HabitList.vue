@@ -46,6 +46,8 @@ const habits = computed((): (RoutinesHabitsItem & { habit?: Habit; track?: Track
     }),
 )
 
+const toast = useToast()
+
 const loadingHabitId = ref<Record<string, boolean>>({})
 const loadingAction = ref<('completed' | 'skipped' | null) | null>()
 function trackHabit(
@@ -57,12 +59,22 @@ function trackHabit(
   },
   habitId: number,
 ) {
+  if (!selectedDate.value) {
+    console.error('Selected date is not set')
+    toast.add({
+      title: 'Error',
+      description: 'Selected date is not set',
+      color: 'error',
+    })
+    return
+  }
+
   loadingHabitId.value[habitId] = true
   loadingAction.value = payload.status
 
   return createTrack({
     ...payload,
-    date: selectedDate.value.toISOString(),
+    date: selectedDate.value,
   })
     .then(() => {
       return appStore.fetchTracks()

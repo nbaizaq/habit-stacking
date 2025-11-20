@@ -16,10 +16,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import dayjs from 'dayjs'
+import { DATE_FORMAT } from '@/utils/constants'
 
 const props = defineProps<{
   day: Date
-  selectedDate: Date
+  selectedDate: string
 }>()
 const emit = defineEmits(['click'])
 
@@ -32,7 +33,7 @@ const isToday = computed(() => {
 })
 
 const isSelected = computed(() => {
-  return props.day.toDateString() === props.selectedDate.toDateString()
+  return dayjs(props.day).format(DATE_FORMAT) === props.selectedDate
 })
 
 const dayName = computed(() => {

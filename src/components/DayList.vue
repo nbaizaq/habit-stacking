@@ -17,7 +17,7 @@ import { useAppStore } from '@/stores/app'
 import dayjs from 'dayjs'
 
 const appStore = useAppStore()
-const selectedDate = computed<Date | null>(() => appStore.getSelectedDate)
+const selectedDate = computed<string | null>(() => appStore.getSelectedDate)
 const days = ref<Date[]>([])
 const emit = defineEmits(['select-date'])
 

@@ -52,15 +52,27 @@ const emit = defineEmits<{
   ): void
 }>()
 
+const toast = useToast()
+
 function onTrack(value: {
   id?: number
   routineHabitId: number
   status: 'completed' | 'skipped' | null
   routineTrackId?: number
 }) {
+  if (!selectedDate.value) {
+    console.error('Selected date is not set')
+    toast.add({
+      title: 'Error',
+      description: 'Selected date is not set',
+      color: 'error',
+    })
+    return
+  }
+
   emit('track', {
     ...value,
-    date: selectedDate.value.toISOString(),
+    date: selectedDate.value,
   })
 }
 

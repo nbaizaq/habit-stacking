@@ -13,7 +13,7 @@ export type RoutineTrack = {
 
 export const createRoutineTrack = (routineTrack: {
   routineId: number
-  date: Date
+  date: string
 }): Promise<RoutineTrack> => {
   return api
     .request<{ routineTrack: RoutineTrack }>('/routine-tracks', {

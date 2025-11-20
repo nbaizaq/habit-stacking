@@ -104,8 +104,20 @@ function onUpdate() {
   emit('update')
 }
 
+const toast = useToast()
+
 const loadingStartRoutine = ref(false)
 function startRoutine() {
+  if (!selectedDate.value) {
+    console.error('Selected date is not set')
+    toast.add({
+      title: 'Error',
+      description: 'Selected date is not set',
+      color: 'error',
+    })
+    return
+  }
+
   loadingStartRoutine.value = true
   return createRoutineTrack({
     routineId: props.routine.id,

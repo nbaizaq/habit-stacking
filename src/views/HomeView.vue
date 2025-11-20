@@ -39,12 +39,7 @@ const tracks = computed(() => appStore.getTracks)
 const loading = ref(false)
 
 function onSelectDate() {
-  if (appStore.getTracks.length === 0) {
-    loading.value = true
-  }
-  appStore.fetchTracks().finally(() => {
-    loading.value = false
-  })
+  appStore.fetchTracks()
 }
 
 if (appStore.getSelectedDate === null) {

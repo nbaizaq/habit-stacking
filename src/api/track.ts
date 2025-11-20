@@ -11,9 +11,9 @@ export type Track = {
   updatedAt: string
 }
 
-export function getTracks(date?: Date): Promise<Track[]> {
+export function getTracks(date?: string): Promise<Track[]> {
   return api
-    .request<{ tracks: Track[] }>('/tracks' + (date ? '?date=' + date.toISOString() : ''))
+    .request<{ tracks: Track[] }>('/tracks' + (date ? '?date=' + date : ''))
     .then((res) => res.result.tracks)
 }
 
