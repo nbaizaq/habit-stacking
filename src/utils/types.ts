@@ -1,6 +1,3 @@
-import type { Models } from 'appwrite'
-
-export type Model = Models.DefaultRow
 export type User = {
   id: string
   firstname: string
